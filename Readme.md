@@ -47,5 +47,7 @@ cmake --build build -- -j$(nproc)
 ```
 
 ## Usage
-./build/my_llama_chat -m/models/yourmodel.gguf [-ngl gpu_layers]
+```
+./build/my_llama_chat  -m/models/yourmodel.gguf [-ngl gpu_layers]
+```
 
