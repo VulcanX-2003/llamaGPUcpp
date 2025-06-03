@@ -17,11 +17,27 @@ This repository demonstrates how to run [llama.cpp](https://github.com/ggerganov
 - [llama.cpp](https://github.com/ggerganov/llama.cpp) with GPU support
 - Save ur gguf files to a models directory
 
+## Directory Structure
+```markdown
+
+llamaGPUcpp/
+├── external/
+│   └── llama.cpp/         # cloned llama.cpp repository
+├── models/
+│   └── yourmodel.gguf     # place your GGUF model files here
+├── build/                 # build output (after compilation)
+├── Readme.md
+├── CMakeLists.txt         
+└── src/main.cpp           # chat code
+
+```
+
+
 ## Build Instructions
 
 ```bash
 git clone https://github.com/VulcanX-2003/llamaGPUcpp.git
-cd ZenoTest2
+cd llmaGPUcpp
 mkdir external
 cd external
 git clone --depth=1 https://github.com/ggerganov/llama.cpp
