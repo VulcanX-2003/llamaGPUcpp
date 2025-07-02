@@ -1,27 +1,64 @@
-cmake_minimum_required(VERSION 3.16)
-project(my_llama_chat)
+cmake_minimum_required(VERSION 3.18)
+project(my_llama_chat LANGUAGES CXX)
+
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- Options ---
-option(LLAMA_CUDA "Enable CUDA support" ON)
 
-# --- Add llama.cpp sources ---
+option(GGML_CUDA "Enable CUDA backend for ggml" ON)
+set(BUILD_SHARED_LIBS OFF)  # Use static libraries for portability
+
+
+if(WIN32)
+    
+    enable_language(CUDA) 
+    
+    find_package(CUDAToolkit REQUIRED)
+    set(CMAKE_CUDA_STANDARD 17)
+    set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+   
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+elseif(UNIX AND NOT APPLE)
+    
+    if(GGML_CUDA)
+        enable_language(CUDA) 
+        find_package(CUDAToolkit REQUIRED)
+        set(CMAKE_CUDA_STANDARD 17)
+        set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+    endif()
+else()
+    message(WARNING "Unsupported platform. Disabling CUDA.")
+    set(GGML_CUDA OFF)
+endif()
+
+
 add_subdirectory(external/llama.cpp)
 
-# --- Your executable ---
 add_executable(my_llama_chat src/main.cpp)
 
-# Include llama headers
+
 target_include_directories(my_llama_chat PRIVATE
     external/llama.cpp
     external/llama.cpp/common
 )
 
-# --- Link llama.cpp (which includes ggml etc.) ---
+
 target_link_libraries(my_llama_chat PRIVATE llama)
 
-# CUDA flags
-if(LLAMA_CUDA)
+
+if(GGML_CUDA AND CUDAToolkit_FOUND)
     target_compile_definitions(my_llama_chat PRIVATE GGML_CUDA)
+    target_link_libraries(my_llama_chat PRIVATE CUDA::cudart)
+endif()
+
+
+if(WIN32)
+    
+    if(MSVC)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
+elseif(UNIX AND NOT APPLE)
+    
+    target_compile_options(my_llama_chat PRIVATE -Wall -Wextra)
 endif()
