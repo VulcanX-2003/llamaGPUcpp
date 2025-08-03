@@ -44,18 +44,14 @@ add_subdirectory(external/llama.cpp)
 
 add_executable(my_llama_chat src/main.cpp)
 
-<<<<<<< HEAD
-=======
 
->>>>>>> f707f78a26b01121182999e9c173ac4b0158cd3b
 target_include_directories(my_llama_chat PRIVATE
     external/llama.cpp
     external/llama.cpp/common
 )
 
-<<<<<<< HEAD
 target_link_libraries(my_llama_chat PRIVATE llama)
-=======
+
 
 target_link_libraries(my_llama_chat PRIVATE llama)
 
@@ -75,4 +71,4 @@ elseif(UNIX AND NOT APPLE)
     
     target_compile_options(my_llama_chat PRIVATE -Wall -Wextra)
 endif()
->>>>>>> f707f78a26b01121182999e9c173ac4b0158cd3b
+
