@@ -13,7 +13,7 @@ static void print_usage(int, char ** argv) {
 
 int main(int argc, char ** argv) {
     std::string model_path;
-    int ngl = 25;  // number of GPU layers, set to 0 for CPU only
+    int ngl = 32;  // number of GPU layers, set to 0 for CPU only
     int n_ctx = 2048;
 
     // parse command line arguments
